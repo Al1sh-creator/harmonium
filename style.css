@@ -1,0 +1,511 @@
+:root {
+    --bg: #0d0f12;
+    --panel-bg: rgba(255, 255, 255, 0.05);
+    --panel-border: rgba(255, 255, 255, 0.1);
+    --accent: #d4af37;
+    --accent-glow: rgba(212, 175, 55, 0.4);
+    --accent-dark: #b5952f;
+    --red: #ff4757;
+    --green: #2ed573;
+    --text: #f0f0f0;
+    --muted: #888;
+    --key-white: #fdfbf7;
+    --key-black: #1a1a1a;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 1.5rem;
+    background-image: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
+}
+
+.app-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+header {
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-shadow: 0 0 30px var(--accent-glow);
+    letter-spacing: 2px;
+}
+
+header p {
+    color: var(--muted);
+    font-weight: 300;
+    margin-top: 0.3rem;
+}
+
+.glass {
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--panel-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.panel {
+    padding: 1.5rem;
+}
+
+/* Top Controls */
+.top-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.2rem;
+}
+
+h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Bellows Panel */
+.bellows-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red);
+    transition: all 0.3s;
+}
+
+.status-dot.active {
+    background: var(--green);
+    box-shadow: 0 0 10px var(--green);
+}
+
+/* Bellows SVG */
+.bellows-visual {
+    width: 100%;
+    max-width: 130px;
+}
+
+#bellows-svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 8px var(--accent-glow));
+    transition: transform 0.1s ease;
+}
+
+/* Pressure Meter */
+.pressure-meter {
+    width: 100%;
+}
+
+.pressure-meter label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+}
+
+.meter-bar {
+    height: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid var(--panel-border);
+}
+
+.meter-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), #ff6b81);
+    border-radius: 5px;
+    transition: width 0.08s ease;
+}
+
+/* Pump Button */
+.pump-methods {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    width: 100%;
+}
+
+.pump-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: #111;
+    font-weight: 700;
+    font-size: 0.95rem;
+    font-family: inherit;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: transform 0.1s, box-shadow 0.2s;
+    user-select: none;
+}
+
+.pump-btn:active,
+.pump-btn.pumping {
+    transform: scale(0.96);
+    box-shadow: 0 2px 20px var(--accent-glow);
+    background: linear-gradient(135deg, #e8c84a, var(--accent));
+}
+
+.pump-icon {
+    font-size: 1.2rem;
+}
+
+.spacebar-hint {
+    font-size: 0.78rem;
+    color: var(--muted);
+}
+
+kbd {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: inherit;
+    font-size: 0.8rem;
+}
+
+.sensor-buttons {
+    width: 100%;
+    margin-top: 0.3rem;
+}
+
+.small-btn {
+    width: 100%;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.small-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent);
+}
+
+.small-btn.active-btn {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Settings Panel */
+.settings-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.setting-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.octave-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.octave-btn {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.octave-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: var(--accent);
+}
+
+#octave-display {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 24px;
+    text-align: center;
+}
+
+.slider {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+    cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    cursor: pointer;
+}
+
+/* Drone Panel */
+.drone-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.drone-hint {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: -0.5rem;
+}
+
+.drone-keys {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.drone-btn {
+    padding: 0.55rem 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.drone-btn:hover {
+    border-color: var(--accent);
+}
+
+.drone-btn.active {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+/* Keyboard */
+.keyboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    overflow-x: auto;
+}
+
+.keyboard {
+    position: relative;
+    height: 200px;
+    display: flex;
+    user-select: none;
+    padding: 0 0.5rem;
+}
+
+.key {
+    position: relative;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.08s, transform 0.05s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.key.white {
+    width: 52px;
+    height: 180px;
+    background: var(--key-white);
+    border: 1px solid #ccc;
+    z-index: 1;
+    color: #444;
+}
+
+.key.white:hover {
+    background: #f5f0e8;
+}
+
+.key.white.active {
+    background: #e0d8c8;
+    transform: translateY(3px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.key.black {
+    width: 32px;
+    height: 115px;
+    background: var(--key-black);
+    z-index: 2;
+    margin-left: -16px;
+    margin-right: -16px;
+    color: #aaa;
+    font-size: 0.65rem;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.key.black:hover {
+    background: #2a2a2a;
+}
+
+.key.black.active {
+    background: #333;
+    transform: translateY(2px);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.instructions {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+/* Drone Key Row */
+.drone-key-row {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.drone-key {
+    padding: 0.5rem 1rem;
+    background: rgba(212, 175, 55, 0.06);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.82rem;
+    color: var(--accent);
+    text-align: center;
+    transition: all 0.2s;
+    user-select: none;
+    min-width: 70px;
+}
+
+.drone-key:hover {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: var(--accent);
+}
+
+.drone-key.active {
+    background: rgba(212, 175, 55, 0.25);
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+    font-weight: 700;
+}
+
+.dk-label {
+    pointer-events: none;
+}
+
+/* Keyboard shortcut cheatsheet */
+.shortcut-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 2rem;
+    justify-content: center;
+}
+
+.shortcut-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.shortcut-title {
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+}
+
+.shortcut-row {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+}
+
+.drone-shortcut {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.2);
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 0.68rem;
+    font-family: inherit;
+    margin-right: 3px;
+    pointer-events: none;
+}

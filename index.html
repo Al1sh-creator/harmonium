@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Harmonium</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>🎵 Harmonium</h1>
+            <p>A software harmonium powered by your browser</p>
+        </header>
+
+        <main>
+            <!-- Top Controls Row -->
+            <div class="top-controls">
+
+                <!-- Bellows Panel -->
+                <div class="panel glass bellows-panel">
+                    <h3>🪗 Bellows</h3>
+                    <div class="status-indicator">
+                        <div id="camera-status" class="status-dot"></div>
+                        <span id="camera-status-text">Inactive</span>
+                    </div>
+
+                    <!-- Animated Bellows SVG -->
+                    <div class="bellows-visual">
+                        <svg id="bellows-svg" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Left side -->
+                            <rect x="0" y="5" width="12" height="70" rx="3" fill="#d4af37" />
+                            <!-- Right side -->
+                            <rect x="108" y="5" width="12" height="70" rx="3" fill="#d4af37" />
+                            <!-- Folds - dynamically scaled by JS -->
+                            <g id="bellows-folds">
+                                <line x1="12" y1="15" x2="60" y2="10" stroke="#b5952f" stroke-width="2" />
+                                <line x1="60" y1="10" x2="108" y2="15" stroke="#b5952f" stroke-width="2" />
+                                <line x1="12" y1="25" x2="60" y2="20" stroke="#c8a830" stroke-width="1.5" />
+                                <line x1="60" y1="20" x2="108" y2="25" stroke="#c8a830" stroke-width="1.5" />
+                                <line x1="12" y1="35" x2="60" y2="30" stroke="#b5952f" stroke-width="2" />
+                                <line x1="60" y1="30" x2="108" y2="35" stroke="#b5952f" stroke-width="2" />
+                                <line x1="12" y1="45" x2="60" y2="40" stroke="#c8a830" stroke-width="1.5" />
+                                <line x1="60" y1="40" x2="108" y2="45" stroke="#c8a830" stroke-width="1.5" />
+                                <line x1="12" y1="55" x2="60" y2="50" stroke="#b5952f" stroke-width="2" />
+                                <line x1="60" y1="50" x2="108" y2="55" stroke="#b5952f" stroke-width="2" />
+                                <line x1="12" y1="65" x2="60" y2="60" stroke="#c8a830" stroke-width="1.5" />
+                                <line x1="60" y1="60" x2="108" y2="65" stroke="#c8a830" stroke-width="1.5" />
+                            </g>
+                            <!-- Bellows body -->
+                            <path id="bellows-body" d="M12,5 L108,5 L108,75 L12,75 Z" fill="rgba(212,175,55,0.08)"
+                                stroke="#d4af37" stroke-width="1" />
+                        </svg>
+                    </div>
+
+                    <!-- Pressure Meter -->
+                    <div class="pressure-meter">
+                        <label>Pressure</label>
+                        <div class="meter-bar">
+                            <div id="pressure-fill" class="meter-fill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Pump methods -->
+                    <div class="pump-methods">
+                        <button id="pump-btn" class="pump-btn">
+                            <span class="pump-icon">🫁</span>
+                            <span>Hold to Pump</span>
+                        </button>
+                        <div class="spacebar-hint">or press <kbd>Space</kbd></div>
+                    </div>
+
+                    <div class="sensor-buttons">
+                        <button id="start-camera-btn" class="small-btn">📷 Camera Mode</button>
+                    </div>
+                </div>
+
+                <!-- Octave & Settings Panel -->
+                <div class="panel glass settings-panel">
+                    <h3>⚙️ Settings</h3>
+
+                    <div class="setting-group">
+                        <label>Octave</label>
+                        <div class="octave-controls">
+                            <button id="octave-down-btn" class="octave-btn">−</button>
+                            <span id="octave-display">4</span>
+                            <button id="octave-up-btn" class="octave-btn">+</button>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Reverb</label>
+                        <input type="range" id="reverb-slider" min="0" max="1" step="0.05" value="0.3" class="slider">
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Master Volume</label>
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.8" class="slider">
+                    </div>
+                </div>
+
+                <!-- Drone Panel -->
+                <div class="panel glass drone-panel">
+                    <h3>🕉️ Drone Notes</h3>
+                    <p class="drone-hint">Toggle drone strings (continuous background hum)</p>
+                    <div class="drone-keys">
+                        <button class="drone-btn" data-note="Sa" data-freq="130.81">Sa (C)</button>
+                        <button class="drone-btn" data-note="Re" data-freq="146.83">Re (D)</button>
+                        <button class="drone-btn" data-note="Ga" data-freq="164.81">Ga (E)</button>
+                        <button class="drone-btn" data-note="Ma" data-freq="174.61">Ma (F)</button>
+                        <button class="drone-btn" data-note="Pa" data-freq="196.00">Pa (G)</button>
+                        <button class="drone-btn" data-note="Dha" data-freq="220.00">Dha (A)</button>
+                        <button class="drone-btn" data-note="Ni" data-freq="246.94">Ni (B)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Keyboard -->
+            <div class="keyboard-container panel glass">
+                <div class="keyboard" id="keyboard"></div>
+                <div class="drone-key-row" id="drone-key-row"></div>
+                <div class="instructions">
+                    <div class="shortcut-grid">
+                        <div class="shortcut-group">
+                            <div class="shortcut-title">🎹 White Keys</div>
+                            <div class="shortcut-row">
+                                <kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><kbd>F</kbd><kbd>G</kbd><kbd>H</kbd><kbd>J</kbd><kbd>K</kbd>
+                            </div>
+                        </div>
+                        <div class="shortcut-group">
+                            <div class="shortcut-title">🎹 Black Keys</div>
+                            <div class="shortcut-row"><kbd>W</kbd><kbd>E</kbd><kbd>T</kbd><kbd>Y</kbd><kbd>U</kbd></div>
+                        </div>
+                        <div class="shortcut-group">
+                            <div class="shortcut-title">🪗 Bellows</div>
+                            <div class="shortcut-row"><kbd>Space</kbd> to pump</div>
+                        </div>
+                        <div class="shortcut-group">
+                            <div class="shortcut-title">🎵 Octave</div>
+                            <div class="shortcut-row"><kbd>↑</kbd> up &nbsp; <kbd>↓</kbd> down</div>
+                        </div>
+                        <div class="shortcut-group">
+                            <div class="shortcut-title">🔊 Volume</div>
+                            <div class="shortcut-row"><kbd>-</kbd> down &nbsp; <kbd>=</kbd> up</div>
+                        </div>
+                        <div class="shortcut-group">
+                            <div class="shortcut-title">🌀 Reverb</div>
+                            <div class="shortcut-row"><kbd>[</kbd> down &nbsp; <kbd>]</kbd> up</div>
+                        </div>
+                        <div class="shortcut-group">
+                            <div class="shortcut-title">🕉️ Drones</div>
+                            <div class="shortcut-row"><kbd>1</kbd>Sa &nbsp;<kbd>2</kbd>Re &nbsp;<kbd>3</kbd>Ga
+                                &nbsp;<kbd>4</kbd>Ma &nbsp;<kbd>5</kbd>Pa &nbsp;<kbd>6</kbd>Dha &nbsp;<kbd>7</kbd>Ni
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <video id="camera-feed" autoplay playsinline muted style="display:none"></video>
+    <canvas id="camera-canvas" style="display:none"></canvas>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
