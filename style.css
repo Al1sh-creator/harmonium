@@ -286,6 +286,7 @@ kbd {
 .slider {
     width: 100%;
     -webkit-appearance: none;
+    appearance: none;
     height: 6px;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.1);
@@ -301,6 +302,49 @@ kbd {
     background: var(--accent);
     box-shadow: 0 0 8px var(--accent-glow);
     cursor: pointer;
+}
+
+/* Record Button */
+.record-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(255, 71, 87, 0.1);
+    color: var(--text);
+    border: 1px solid rgba(255, 71, 87, 0.5);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.record-btn:hover {
+    background: rgba(255, 71, 87, 0.2);
+    border-color: var(--red);
+}
+
+.record-btn.recording {
+    background: rgba(255, 71, 87, 0.2);
+    border-color: var(--red);
+    box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+    animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-red {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 71, 87, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 71, 87, 0);
+    }
 }
 
 /* Drone Panel */

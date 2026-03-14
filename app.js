@@ -2,7 +2,10 @@
 // AUDIO ENGINE
 // =============================================
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioCtx, masterGain, reverbGain, dryGain;
+let audioCtx, masterGain, reverbGain, dryGain, mediaStreamDestination;
+let mediaRecorder;
+let recordedChunks = [];
+let isRecording = false;
 const activeOscillators = {};
 const droneOscillators = {};
 
@@ -64,8 +67,11 @@ function initAudio() {
     delay1.connect(delay2);
     delay2.connect(reverbGain);
 
+    mediaStreamDestination = audioCtx.createMediaStreamDestination();
     dryGain.connect(audioCtx.destination);
     reverbGain.connect(audioCtx.destination);
+    dryGain.connect(mediaStreamDestination);
+    reverbGain.connect(mediaStreamDestination);
 }
 
 function createHarmoniumVoice(freq) {
@@ -195,6 +201,7 @@ function toggleDrone(name, freq, el) {
         gain.gain.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.5);
         osc1.connect(gain); osc2.connect(gain);
         gain.connect(audioCtx.destination);
+        if (mediaStreamDestination) gain.connect(mediaStreamDestination);
         osc1.start(); osc2.start();
         droneOscillators[name] = { osc1, osc2, gain };
         el.classList.add('active');
@@ -364,6 +371,7 @@ document.querySelectorAll('.drone-btn').forEach(btn => {
             osc1.connect(gain);
             osc2.connect(gain);
             gain.connect(audioCtx.destination); // Drone bypasses bellows (always audible)
+            if (mediaStreamDestination) gain.connect(mediaStreamDestination);
 
             osc1.start();
             osc2.start();
@@ -496,4 +504,55 @@ function processCamera(time) {
         lastFrameTime = time;
     }
     requestAnimationFrame(processCamera);
+}
+
+// =============================================
+// AUDIO RECORDING
+// =============================================
+const recordBtn = document.getElementById('record-btn');
+
+function toggleRecording() {
+    if (!audioCtx) initAudio();
+    
+    if (isRecording) {
+        // Stop recording
+        mediaRecorder.stop();
+        recordBtn.innerHTML = '🔴 Start Recording';
+        recordBtn.classList.remove('recording');
+        isRecording = false;
+    } else {
+        // Start recording
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(mediaStreamDestination.stream);
+        
+        mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) {
+                recordedChunks.push(e.data);
+            }
+        };
+        
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'harmonium-recording.webm';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 100);
+        };
+        
+        mediaRecorder.start();
+        recordBtn.innerHTML = '⏹️ Stop Recording';
+        recordBtn.classList.add('recording');
+        isRecording = true;
+    }
+}
+
+if (recordBtn) {
+    recordBtn.addEventListener('click', toggleRecording);
 }
